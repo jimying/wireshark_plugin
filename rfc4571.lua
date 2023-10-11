@@ -47,7 +47,13 @@ function dissectFullRFC4571 (tvb, pinfo, tree)
 end
 
 function getRFC4571Len (tvb, pinfo, offset)
-    return tvb:range(offset, 2):uint()+2
+    local data_len = tvb:range(offset, 2):uint()
+    -- Check pkt size, if too big, print error info
+    if (data_len > 1500) then
+        local err = string.format('pkt(index=%d) is too big (len=%d 0x%x) !!', pinfo.number, data_len, data_len)
+        print(err)
+    end
+    return (data_len+2)
 end
 
 function rfc4571.dissector (tvb, pinfo, tree)
