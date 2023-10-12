@@ -40,6 +40,9 @@ function dissectFullRFC4571 (tvb, pinfo, tree)
         Dissector.get("rtcp"):call(tvb:range(offset):tvb(), pinfo, tree)
     end
 
+    -- append "rfc4571" to protocol name, eg. "rtp" -> "rtp(rfc4571)"
+    pinfo.cols.protocol:append("(rfc4571)")
+
     return tvb:len()
 end
 
