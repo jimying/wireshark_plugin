@@ -5,11 +5,11 @@
 -- create a new dissector
 local NAME = "rfc4571"
 local PORT = 7777
-local rfc4571 = Proto(NAME, "rtp4571")
+local rfc4571 = Proto(NAME, "rfc4571")
 
 -- create fields of rfc4571
-local field_length = ProtoField.uint16 ("len", "length")
-rfc4571.fields = { field_length }
+local field_len = ProtoField.uint16 ("rfc4571.len", "len")
+rfc4571.fields = { field_len }
 
 -- dissect packet
 function dissectFullRFC4571 (tvb, pinfo, tree)
@@ -29,7 +29,7 @@ function dissectFullRFC4571 (tvb, pinfo, tree)
     local subtree = tree:add(rfc4571, tvb())
     local offset = 0
         
-    subtree:add(field_length, tvb:range(offset,2):uint())
+    subtree:add(field_len, tvb:range(offset,2):uint())
     offset = offset + 2
     
     local pt = tvb:range(offset+1, 1):bitfield(1,7)
