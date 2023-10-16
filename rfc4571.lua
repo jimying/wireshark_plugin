@@ -32,13 +32,7 @@ function dissectFullRFC4571 (tvb, pinfo, tree)
     subtree:add(field_len, tvb:range(offset,2):uint())
     offset = offset + 2
     
-    local pt = tvb:range(offset+1, 1):bitfield(1,7)
-    -- https://www.iana.org/assignments/rtp-parameters/rtp-parameters.xhtml
-    if pt <= 34 or pt >= 96 then
-        Dissector.get("rtp"):call(tvb:range(offset):tvb(), pinfo, tree)
-    else
-        Dissector.get("rtcp"):call(tvb:range(offset):tvb(), pinfo, tree)
-    end
+    Dissector.get("rtp"):call(tvb:range(offset):tvb(), pinfo, tree)
 
     -- append "rfc4571" to protocol name, eg. "rtp" -> "rtp(rfc4571)"
     pinfo.cols.protocol:append("(rfc4571)")
